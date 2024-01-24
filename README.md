@@ -18,8 +18,7 @@ Steps to run :
 
 ### `npm start`
 
-
-
+Excited to play? Give it a try [here](https://tic-tac-toe-game-zeta-orpin.vercel.app/)
 
 
 
