@@ -5,8 +5,14 @@ import React, { useState } from "react";
   }
 
   function App(){
+    const draw_audio = new Audio("/audio/draw_audio.mp3");
+    const success_audio = new Audio("/audio/success_audio.mp3");
+    const x_audio = new Audio("/audio/x_audio.mp3");
+    const o_audio = new Audio("/audio/o_audio.mp3")
+
     const [isplayer,setIsPlayer] = useState(true);
-    const [squares,setSquares] = useState(Array(9).fill(null));
+    const [squares,setSquares] = useState(Array(9).fill(null))
+    
 
     function handleClick(index){
       if (squares[index] || findWinner(squares)){
@@ -15,9 +21,11 @@ import React, { useState } from "react";
       const newSquares = squares.slice();
       if(isplayer){
         newSquares[index] = "X";
+        x_audio.play();
       }
       else{
         newSquares[index] = "O";
+        o_audio.play();
       }
       setSquares(newSquares);
       setIsPlayer(!isplayer);
@@ -45,15 +53,18 @@ import React, { useState } from "react";
       if (winner){
         document.getElementById("status").classList.add("celebrate");
         status = "Winner is "+ winner +" 🎉 ";
+        success_audio.play();
       }else{
         document.getElementById("status").classList.add("draw");
         status = "Draw";
+        draw_audio.play();
       }
     }else{
       const winner = findWinner(squares);
       if (winner){
         document.getElementById("status").classList.add("celebrate");
         status = "Winner is "+ winner +" 🎉 ";
+        success_audio.play();
       }else{
         status = "Next player : "+ (isplayer? "X" : "O");
       }
