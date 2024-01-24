@@ -16,6 +16,10 @@ body{
 }
 
 @media (max-width:800px) {
+  body{
+    background-color: antiquewhite;
+    font-family: 'Open Sans', sans-serif;
+  }
   .square{
     font-size: 3em;
     height: 80px;
