@@ -18,9 +18,7 @@ Steps to run :
 
 ### `npm start`
 
-Results : 
-<img src="./public/images/win.png" width=20% height=20%>
-<img src="./public/images/draw.png" width=19% height=19%>
+Excited to play? Give it a try [here](https://tic-tac-toe-game-zeta-orpin.vercel.app/)
 
 
 
