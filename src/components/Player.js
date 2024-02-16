@@ -12,6 +12,10 @@ export default function Player(props){
         // this is the best practice as the value updation happens instantly.
         // React gives the arrow function the current value of the isEditing as parameter
         setIsEditing((editing) => !editing);
+        if(isEditing){
+          console.log("saved button clicked");
+          props.onNameChange(props.playerSymbol,playerName);
+        }
     }
 
     function handleChange(e){
@@ -27,8 +31,10 @@ export default function Player(props){
                 :
                 <span className="player-name"><b>{playerName}</b></span>
             }
-            <span className="player-symbol"><b>{props.playerSymbol}</b></span>
+          <span className="player-symbol"><b>{props.playerSymbol}</b></span>
           </span> 
+
+
            
           <button onClick={handleEdit}><b>{isEditing ? "Save" : "Edit"}</b></button> 
           

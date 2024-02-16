@@ -13,8 +13,13 @@ import Player from "./components/Player";
 
     const [isplayerX,setIsPlayer] = useState(true);
     const [squares,setSquares] = useState(Array(9).fill(null));
+    const [playersName,setPlayersName] = useState({
+      "X" : "Player 1",
+      "O" : "Player 2"
+    })
     let status = null;
     
+    // to reset the game
     function handleReset(){
       setIsPlayer(true);
       setSquares(Array(9).fill(null));
@@ -23,6 +28,7 @@ import Player from "./components/Player";
       document.getElementById("status").classList.remove("draw");
     }
 
+    // to play audio on selecting each button and also to check if the game is over or not
     function handleClick(index){
       // check if already the sqaure is filled or if the game is over if any player wins
       // in this case we need to simply return
@@ -49,6 +55,7 @@ import Player from "./components/Player";
       setIsPlayer((editingPlayer) => !editingPlayer);
     }
 
+    // to find the winner
     function findWinner(squares){
       const pattern = [
         [0,1,2],[3,4,5],[6,7,8],
@@ -64,11 +71,28 @@ import Player from "./components/Player";
       return null;
     }
 
+    // to update the gamers' names instantly
+    function handleNameChange(symbol, name){
+      console.log("entered handlename change fn");
+
+      // Note : 
+      // below 2 ways instanlty update the state values of playersName
+      // Case 1 :
+      // setPlayersName((prevPlayersName) => {
+      //   return{...prevPlayersName,[symbol] : name}});
+      // Case 2:
+      setPlayersName({...playersName,[symbol]:name});
+
+      // this wont update the state of the playersName as symbol value is not used
+      // setPlayersName({...playersName,symbol:name});
+    }
+
+    // get the game status
     if(squares.includes(null) === false){
       const winner = findWinner(squares);
       if (winner){
         document.getElementById("status").classList.add("celebrate");
-        status = "Winner is "+ winner +" 🎉 ";
+        status = "Winner is "+ playersName[winner].toUpperCase() +" 🎉 ";
         success_audio.play();
       }else{
         document.getElementById("status").classList.add("draw");
@@ -80,10 +104,10 @@ import Player from "./components/Player";
       const winner = findWinner(squares);
       if (winner){
         document.getElementById("status").classList.add("celebrate");
-        status = "Winner is "+ winner +" 🎉 ";
+        status = "Winner is "+ playersName[winner].toUpperCase() +" 🎉 ";
         success_audio.play();
       }else{
-        status = "Next player : "+ (isplayerX? "X" : "O");
+        status = "Next player : "+ (isplayerX? playersName["X"].toUpperCase() : playersName["O"].toUpperCase());
       }
     }
     
@@ -92,9 +116,9 @@ import Player from "./components/Player";
     <div id="game-container">
       <h1 id="status">{status}</h1>
       <ul id="players" className="highlight-player">
-        <Player playerName="Player 1" playerSymbol="X"/>
-        <Player playerName="Player 2" playerSymbol="O"/>
-        
+        <Player playerName={playersName["X"]} playerSymbol="X" onNameChange={handleNameChange}/>
+        <Player playerName={playersName["O"]} playerSymbol="O" onNameChange={handleNameChange}/>
+
       </ul>
       <div className="row">
         <Square value={squares[0]} onSquareClick={()=>{handleClick(0)}}/>

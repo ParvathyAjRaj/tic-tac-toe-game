@@ -78,16 +78,6 @@ body{
   text-transform: uppercase;
 }
 
-.player-symbol{
-  margin-left: 1rem;
-  font-size: 1.2rem;
-  display: inline-block;
-  width: 2rem;
-  text-align: center;
-  border: 2px solid #4D2D18;
-  background-color: wheat;
-}
-
 #players button:hover {
   color: #4D2D18;
 }
@@ -119,8 +109,18 @@ body{
     align-items: center;
     width: 60%;
     border: 2px solid transparent;
-    padding-left: 10%;
-    gap:10%;
+    padding-left: 3%;
+    gap:5%;
+  }
+
+  .player-symbol{
+    margin-left: 4rem;
+    font-size: 1.2rem;
+    display: inline-block;
+    width: 2rem;
+    text-align: center;
+    border: 2px solid #4D2D18;
+    background-color: wheat;
   }
 
 
@@ -143,6 +143,15 @@ body{
   #players{
     padding-left: 15%;
   }
+  .player-symbol{
+  /* margin-left: 1rem; */
+  font-size: 1.2rem;
+  display: inline-block;
+  width: 2rem;
+  text-align: center;
+  border: 2px solid #4D2D18;
+  background-color: wheat;
+}
 }
 
 #players.highlight-player li.active {
