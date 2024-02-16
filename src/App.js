@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Player from "./components/Player";
 import Score from "./components/Score";
+import Result from "./components/Result";
 
   function Square(props){
     return(<button onClick={props.onSquareClick} className="square">{props.value}</button>);
@@ -19,14 +20,14 @@ import Score from "./components/Score";
       "O" : "Player 2"
     });
     const [showScoreBoard,setShowBoard] = useState(false);
+    const [showResult,setShowResult] = useState(false);
     const [scores, setScores] = useState({ X: 0, O: 0 });
     let status = null;
-  
-  
-    
+     
     // to reset the game
     function handleReset(){
       setIsPlayer(true);
+      setShowResult(false);
       setSquares(Array(9).fill(null));
       status = null;
       document.getElementById("status").classList.remove("celebrate");
@@ -109,21 +110,21 @@ import Score from "./components/Score";
     if(squares.includes(null) === false){
       
       if (winner){
-        document.getElementById("status").classList.add("celebrate");
-        status = "Winner is "+ playersName[winner].toUpperCase() +" 🎉 ";
-        success_audio.play();
+        // document.getElementById("status").classList.add("celebrate");
+        status = playersName[winner].toUpperCase() + " wins this round" ;
+        // success_audio.play();
         
       }else{
         document.getElementById("status").classList.add("draw");
         status = "Draw";
-        draw_audio.play();
+        // draw_audio.play();
       }
 
     }else{
       if (winner){
-        document.getElementById("status").classList.add("celebrate");
-        status = "Winner is "+ playersName[winner].toUpperCase() +" 🎉 ";
-        success_audio.play();
+        // document.getElementById("status").classList.add("celebrate");
+        status = playersName[winner].toUpperCase() + " wins this round" ;
+        // success_audio.play();
       }else{
         status = "Next player : "+ (isplayerX? playersName["X"].toUpperCase() : playersName["O"].toUpperCase());
       }
@@ -133,25 +134,28 @@ import Score from "./components/Score";
     function handleScore(){
       setShowBoard(true);
     }
-    
-    
 
+   
   return(
     <div id="game-container">
-      <h1 id="status">{status}</h1>
+      <h1 style={{display: showScoreBoard ? "none" : ""}} id="status">{status}</h1>
       <div className="scoreButton">
         <button onClick={handleScore}>ScoreBoard</button>
       </div>
       {showScoreBoard ? 
       <div>
+        <h1 className="celebrate" id="status">{scores.X === scores.O ? "draw" : scores.X > scores.O ? "Winner is " + playersName["X"] +" 🎉 ": "Winner is "+playersName["O"]+" 🎉 "}</h1>
         <Score 
         playerX={playersName["X"]} 
         playerO={playersName["O"]} 
         scores = {scores}/>
-        <button onClick={() => setShowBoard(false)}>Back</button>
+        <div className="backButton">
+          <button onClick={() => setShowBoard(false)}>Back</button>
+        </div>
       </div>
       : 
       <div>
+
         <ul id="players" className="highlight-player">
           <Player playerName={playersName["X"]} playerSymbol="X" onNameChange={handleNameChange}/>
           <Player playerName={playersName["O"]} playerSymbol="O" onNameChange={handleNameChange}/>

@@ -3,7 +3,7 @@ import React,{useState} from "react";
 function Score({playerX,playerO,scores}){
 
  return(
-    <>
+    <div className="scoreTable">
         <table>
             <tr>
                 <th>{playerX}</th>
@@ -13,9 +13,8 @@ function Score({playerX,playerO,scores}){
                 <td>{scores.X}</td>
                 <td>{scores.O}</td>
             </tr>
-            
         </table>
-    </>
+    </div>
     )
 }
 
