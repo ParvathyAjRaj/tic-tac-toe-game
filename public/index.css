@@ -190,3 +190,35 @@ body{
 .draw{
   color:#9E9A9A !important;
 }
+
+.scoreButton{
+  text-align: end;
+}
+
+table{
+  border-collapse: collapse;
+  border : 1px solid brown;
+}
+
+th{
+  border : 1px solid brown;
+}
+
+td{
+  border:1px solid brown;
+  width:6rem;
+  text-align: center;
+}
+/* table{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-collapse: collapse;
+}
+
+th{
+  border: 1px solid brown;
+  text-align: center;
+  display: inline-block;
+  
+} */

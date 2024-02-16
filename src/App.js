@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Player from "./components/Player";
+import Score from "./components/Score";
 
   function Square(props){
     return(<button onClick={props.onSquareClick} className="square">{props.value}</button>);
@@ -16,8 +17,12 @@ import Player from "./components/Player";
     const [playersName,setPlayersName] = useState({
       "X" : "Player 1",
       "O" : "Player 2"
-    })
+    });
+    const [showScoreBoard,setShowBoard] = useState(false);
+    const [scores, setScores] = useState({ X: 0, O: 0 });
     let status = null;
+  
+  
     
     // to reset the game
     function handleReset(){
@@ -87,13 +92,27 @@ import Player from "./components/Player";
       // setPlayersName({...playersName,symbol:name});
     }
 
+    const winner = findWinner(squares);
+// give the updated score to Score component
+    React.useEffect(() => {
+      if (winner !== null) {
+        setScores(prevScores => ({
+          ...prevScores,
+          [winner]: prevScores[winner] + 1
+        }));
+      }else{
+          setScores(prevScores => ({...prevScores}))
+      }
+    }, [winner]);
+    
     // get the game status
     if(squares.includes(null) === false){
-      const winner = findWinner(squares);
+      
       if (winner){
         document.getElementById("status").classList.add("celebrate");
         status = "Winner is "+ playersName[winner].toUpperCase() +" 🎉 ";
         success_audio.play();
+        
       }else{
         document.getElementById("status").classList.add("draw");
         status = "Draw";
@@ -101,7 +120,6 @@ import Player from "./components/Player";
       }
 
     }else{
-      const winner = findWinner(squares);
       if (winner){
         document.getElementById("status").classList.add("celebrate");
         status = "Winner is "+ playersName[winner].toUpperCase() +" 🎉 ";
@@ -110,37 +128,55 @@ import Player from "./components/Player";
         status = "Next player : "+ (isplayerX? playersName["X"].toUpperCase() : playersName["O"].toUpperCase());
       }
     }
+
+    // to get the score
+    function handleScore(){
+      setShowBoard(true);
+    }
+    
     
 
   return(
     <div id="game-container">
       <h1 id="status">{status}</h1>
-      <ul id="players" className="highlight-player">
-        <Player playerName={playersName["X"]} playerSymbol="X" onNameChange={handleNameChange}/>
-        <Player playerName={playersName["O"]} playerSymbol="O" onNameChange={handleNameChange}/>
-
-      </ul>
-      <div className="row">
-        <Square value={squares[0]} onSquareClick={()=>{handleClick(0)}}/>
-        <Square value={squares[1]} onSquareClick={()=>{handleClick(1)}}/>
-        <Square value={squares[2]} onSquareClick={()=>{handleClick(2)}}/>
+      <div className="scoreButton">
+        <button onClick={handleScore}>ScoreBoard</button>
       </div>
-      <div className="row">
-        <Square value={squares[3]} onSquareClick={()=>{handleClick(3)}}/>
-        <Square value={squares[4]} onSquareClick={()=>{handleClick(4)}}/>
-        <Square value={squares[5]} onSquareClick={()=>{handleClick(5)}}/>
+      {showScoreBoard ? 
+      <div>
+        <Score 
+        playerX={playersName["X"]} 
+        playerO={playersName["O"]} 
+        scores = {scores}/>
+        <button onClick={() => setShowBoard(false)}>Back</button>
       </div>
-      <div className="row">
-        <Square value={squares[6]} onSquareClick={()=>{handleClick(6)}}/>
-        <Square value={squares[7]} onSquareClick={()=>{handleClick(7)}}/>
-        <Square value={squares[8]} onSquareClick={()=>{handleClick(8)}}/>
+      : 
+      <div>
+        <ul id="players" className="highlight-player">
+          <Player playerName={playersName["X"]} playerSymbol="X" onNameChange={handleNameChange}/>
+          <Player playerName={playersName["O"]} playerSymbol="O" onNameChange={handleNameChange}/>
+        </ul>
+        <div className="row">
+          <Square value={squares[0]} onSquareClick={()=>{handleClick(0)}}/>
+          <Square value={squares[1]} onSquareClick={()=>{handleClick(1)}}/>
+          <Square value={squares[2]} onSquareClick={()=>{handleClick(2)}}/>
+        </div>
+        <div className="row">
+          <Square value={squares[3]} onSquareClick={()=>{handleClick(3)}}/>
+          <Square value={squares[4]} onSquareClick={()=>{handleClick(4)}}/>
+          <Square value={squares[5]} onSquareClick={()=>{handleClick(5)}}/>
+        </div>
+        <div className="row">
+          <Square value={squares[6]} onSquareClick={()=>{handleClick(6)}}/>
+          <Square value={squares[7]} onSquareClick={()=>{handleClick(7)}}/>
+          <Square value={squares[8]} onSquareClick={()=>{handleClick(8)}}/>
+        </div>
+        <div className="resetButton">
+          <button disabled={status.includes("Next")} onClick={handleReset}>Restart</button>
+        </div>
       </div>
-      <div className="resetButton">
-        <button disabled={status.includes("Next")} onClick={handleReset}>Restart</button>
-      </div>
+      }
     </div>
-    
-    
   );
 }
 
