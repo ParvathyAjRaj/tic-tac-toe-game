@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Player from "./components/Player";
 
   function Square(props){
     return(<button onClick={props.onSquareClick} className="square">{props.value}</button>);
@@ -10,16 +11,32 @@ import React, { useState } from "react";
     const x_audio = new Audio("/audio/x_audio.mp3");
     const o_audio = new Audio("/audio/o_audio.mp3")
 
-    const [isplayer,setIsPlayer] = useState(true);
-    const [squares,setSquares] = useState(Array(9).fill(null))
+    const [isplayerX,setIsPlayer] = useState(true);
+    const [squares,setSquares] = useState(Array(9).fill(null));
+    let status = null;
     
+    function handleReset(){
+      setIsPlayer(true);
+      setSquares(Array(9).fill(null));
+      status = null;
+      document.getElementById("status").classList.remove("celebrate");
+      document.getElementById("status").classList.remove("draw");
+    }
 
     function handleClick(index){
+      // check if already the sqaure is filled or if the game is over if any player wins
+      // in this case we need to simply return
       if (squares[index] || findWinner(squares)){
-        return;
+        if(squares[index]){
+          alert("Button already selected");
+          return;
+        }else{
+          return;
+        }
+        
       }
       const newSquares = squares.slice();
-      if(isplayer){
+      if(isplayerX){
         newSquares[index] = "X";
         x_audio.play();
       }
@@ -28,8 +45,8 @@ import React, { useState } from "react";
         o_audio.play();
       }
       setSquares(newSquares);
-      setIsPlayer(!isplayer);
-      
+      // setIsPlayer(!isplayerX);
+      setIsPlayer((editingPlayer) => !editingPlayer);
     }
 
     function findWinner(squares){
@@ -47,7 +64,6 @@ import React, { useState } from "react";
       return null;
     }
 
-    let status;
     if(squares.includes(null) === false){
       const winner = findWinner(squares);
       if (winner){
@@ -59,6 +75,7 @@ import React, { useState } from "react";
         status = "Draw";
         draw_audio.play();
       }
+
     }else{
       const winner = findWinner(squares);
       if (winner){
@@ -66,15 +83,19 @@ import React, { useState } from "react";
         status = "Winner is "+ winner +" 🎉 ";
         success_audio.play();
       }else{
-        status = "Next player : "+ (isplayer? "X" : "O");
+        status = "Next player : "+ (isplayerX? "X" : "O");
       }
     }
     
 
   return(
-    <div>
-      <h1 className="title">Tic Tac Toe</h1>
+    <div id="game-container">
       <h1 id="status">{status}</h1>
+      <ul id="players" className="highlight-player">
+        <Player playerName="Player 1" playerSymbol="X"/>
+        <Player playerName="Player 2" playerSymbol="O"/>
+        
+      </ul>
       <div className="row">
         <Square value={squares[0]} onSquareClick={()=>{handleClick(0)}}/>
         <Square value={squares[1]} onSquareClick={()=>{handleClick(1)}}/>
@@ -89,6 +110,9 @@ import React, { useState } from "react";
         <Square value={squares[6]} onSquareClick={()=>{handleClick(6)}}/>
         <Square value={squares[7]} onSquareClick={()=>{handleClick(7)}}/>
         <Square value={squares[8]} onSquareClick={()=>{handleClick(8)}}/>
+      </div>
+      <div className="resetButton">
+        <button disabled={status.includes("Next")} onClick={handleReset}>Restart</button>
       </div>
     </div>
     
