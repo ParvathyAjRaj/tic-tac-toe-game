@@ -5,14 +5,18 @@ function Score({playerX,playerO,scores}){
  return(
     <div className="scoreTable">
         <table>
-            <tr>
-                <th>{playerX}</th>
-                <th>{playerO}</th>
-            </tr>
-            <tr>
-                <td>{scores.X}</td>
-                <td>{scores.O}</td>
-            </tr>
+            <thead>
+                <tr>
+                    <th>{playerX.toUpperCase()}</th>
+                    <th>{playerO.toUpperCase()}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{scores.X}</td>
+                    <td>{scores.O}</td>
+                </tr>
+            </tbody>
         </table>
     </div>
     )

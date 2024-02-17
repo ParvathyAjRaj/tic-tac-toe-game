@@ -24,20 +24,15 @@ export default function Player(props){
 
     return(
         <li className={(props.isPlayerX === true) ? "active" : undefined}>
-            
-          <span className="player">
-            {isEditing ? 
-                <input onChange={handleChange} value={playerName}/> 
-                :
-                <span className="player-name"><b>{playerName}</b></span>
-            }
+        <span>
+          {isEditing ? 
+              <input onChange={handleChange} value={playerName}/> 
+              :
+              <span className="player-name"><b>{playerName}</b></span>
+          }
           <span className="player-symbol"><b>{props.playerSymbol}</b></span>
-          </span> 
-
-
-           
-          <button onClick={handleEdit}><b>{isEditing ? "Save" : "Edit"}</b></button> 
-          
+        </span> 
+        <button onClick={handleEdit}><b>{isEditing ? "Save" : "Edit"}</b></button>
         </li>);
     
 } 

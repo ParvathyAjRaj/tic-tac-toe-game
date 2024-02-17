@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import Player from "./components/Player";
 import Score from "./components/Score";
-import Result from "./components/Result";
 
   function Square(props){
     return(<button onClick={props.onSquareClick} className="square">{props.value}</button>);
   }
 
   function App(){
-    const draw_audio = new Audio("/audio/draw_audio.mp3");
-    const success_audio = new Audio("/audio/success_audio.mp3");
+    // const draw_audio = new Audio("/audio/draw_audio.mp3");
+    // const success_audio = new Audio("/audio/success_audio.mp3");
     const x_audio = new Audio("/audio/x_audio.mp3");
     const o_audio = new Audio("/audio/o_audio.mp3")
 
@@ -20,14 +19,14 @@ import Result from "./components/Result";
       "O" : "Player 2"
     });
     const [showScoreBoard,setShowBoard] = useState(false);
-    const [showResult,setShowResult] = useState(false);
+    // const [showResult,setShowResult] = useState(false);
     const [scores, setScores] = useState({ X: 0, O: 0 });
     let status = null;
      
     // to reset the game
     function handleReset(){
       setIsPlayer(true);
-      setShowResult(false);
+      // setShowResult(false);
       setSquares(Array(9).fill(null));
       status = null;
       document.getElementById("status").classList.remove("celebrate");
@@ -140,11 +139,11 @@ import Result from "./components/Result";
     <div id="game-container">
       <h1 style={{display: showScoreBoard ? "none" : ""}} id="status">{status}</h1>
       <div className="scoreButton">
-        <button onClick={handleScore}>ScoreBoard</button>
+        <button style={{display: showScoreBoard ? "none" : ""}}onClick={handleScore}>ScoreBoard</button>
       </div>
       {showScoreBoard ? 
       <div>
-        <h1 className="celebrate" id="status">{scores.X === scores.O ? "draw" : scores.X > scores.O ? "Winner is " + playersName["X"] +" 🎉 ": "Winner is "+playersName["O"]+" 🎉 "}</h1>
+        <h1 className="celebrate" id="status">{scores.X === scores.O ? "DRAW" : scores.X > scores.O ? "Winner is " + playersName["X"].toUpperCase() +" 🎉 ": "Winner is "+playersName["O"]+" 🎉 "}</h1>
         <Score 
         playerX={playersName["X"]} 
         playerO={playersName["O"]} 
@@ -155,11 +154,12 @@ import Result from "./components/Result";
       </div>
       : 
       <div>
-
-        <ul id="players" className="highlight-player">
-          <Player playerName={playersName["X"]} playerSymbol="X" onNameChange={handleNameChange}/>
-          <Player playerName={playersName["O"]} playerSymbol="O" onNameChange={handleNameChange}/>
-        </ul>
+        <div className="playerName">
+          <ul id="players" className="highlight-player">
+            <Player playerName={playersName["X"]} playerSymbol="X" onNameChange={handleNameChange}/>
+            <Player playerName={playersName["O"]} playerSymbol="O" onNameChange={handleNameChange}/>
+          </ul>
+        </div>
         <div className="row">
           <Square value={squares[0]} onSquareClick={()=>{handleClick(0)}}/>
           <Square value={squares[1]} onSquareClick={()=>{handleClick(1)}}/>
